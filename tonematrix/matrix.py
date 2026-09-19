@@ -36,8 +36,12 @@ class ToneMatrix:
         self.sample_state = (self.marker+ 1) % samples_per_column 
 
     def index_of(self, row, col):
-        if ((len(self.grid)**0.5)*row) + col < 1:
+        if row < 0 or row >= (len(self.grid)**0.5):
+            raise IndexError ("Position off-grid")
+
+        if col < 0 or col >= (len(self.grid)**0.5):
             raise IndexError("Position off-grid")
+        
         return ((len(self.grid)**0.5)*row) + col
 
     def is_on(self, row, col):
@@ -64,8 +68,8 @@ class ToneMatrix:
 
     def clear(self):
         for i in(len(self.grid)):
-            if not self.grid[i]:
-                self.grid[i] = false
+            if self.grid[i]:
+                self.grid[i] = False
 
     ### playback
 
@@ -75,14 +79,14 @@ class ToneMatrix:
         if self.marker == 0:
             self.pluck_column(self.column)
         for i in range(len(self.instruments)):
-            if self.grid[self.in_index(i,self.column)]:
+            if self.grid[self.index_of(i,self.column)]:
                 result += self.instruments[1].next_sample()
         self.marker += 1
         return result
 
     def pluck_column(self, col):
         if col > len(self.grid)**0.5-1:
-            raise ValueError("column out of bounds")
+            raise IndexError("column out of bounds")
         
         for i in range(len(self.instruments)):
             if self.grid[self.index_of(i,col)]:
