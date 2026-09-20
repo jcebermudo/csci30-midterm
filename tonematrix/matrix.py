@@ -25,7 +25,8 @@ class ToneMatrix:
                  samples_per_column=SAMPLES_PER_COLUMN):
         if grid_size < 1:
             raise ValueError("Grid size too small")
-                  
+
+        self.grid_size = grid_size
         self.grid = [False]*grid_size**2
         self.instruments = []
         for i in range(grid_size):
