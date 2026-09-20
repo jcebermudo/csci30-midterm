@@ -30,6 +30,7 @@ class StringInstrument:
         if sample_rate//frequency < 2:
             raise ValueError("Too little samples")
 
+        self.frequency = frequency
         self.capacity = int(sample_rate//frequency)
         self.buffer = RingBuffer(self.capacity)
         for i in range(self.capacity):
