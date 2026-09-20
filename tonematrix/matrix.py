@@ -77,7 +77,7 @@ class ToneMatrix:
             self.pluck_column(self.column)
         for i in range(len(self.instruments)):
             if self.grid[self.index_of(i,self.column)]:
-                result += self.instruments[1].next_sample()
+                result += self.instruments[i].next_sample()
         self.marker += 1
         return result
 
@@ -87,7 +87,7 @@ class ToneMatrix:
         
         for i in range(len(self.instruments)):
             if self.grid[self.index_of(i,col)]:
-                self.instruments[1].pluck()
+                self.instruments[i].pluck()
 
     ### resizing
 
