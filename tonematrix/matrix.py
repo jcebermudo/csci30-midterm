@@ -37,13 +37,13 @@ class ToneMatrix:
         self.sample_state = (self.marker+ 1) % samples_per_column 
 
     def index_of(self, row, col):
-        if row < 0 or row >= (len(self.grid)**0.5):
+        if row < 0 or row >= (self.grid_size):
             raise IndexError ("Position off-grid")
 
-        if col < 0 or col >= (len(self.grid)**0.5):
+        if col < 0 or col >= (self.grid_size):
             raise IndexError("Position off-grid")
         
-        return ((len(self.grid)**0.5)*row) + col
+        return (self.grid_size*row) + col
 
     def is_on(self, row, col):
         return self.grid[self.index_of(row, col)]
