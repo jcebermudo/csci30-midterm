@@ -14,7 +14,6 @@ Rules for this file:
 from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN
 from tonematrix.scales import frequency_for_row
 from tonematrix.string_instrument import StringInstrument
-from array import array
 
 ON = "#"
 OFF = "."
