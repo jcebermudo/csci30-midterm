@@ -128,7 +128,7 @@ class ToneMatrix:
 
     def to_text(self):
         result = ""
-        for i in (range(len(self.grid))):
+        for i in range(len(self.grid)):
             if i:
                 result += "#"
             else:
