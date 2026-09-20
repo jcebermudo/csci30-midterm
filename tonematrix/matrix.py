@@ -129,7 +129,7 @@ class ToneMatrix:
         result = ""
         for i in range(self.grid_size):
             for j in range(self.grid_size):
-                if self.grid[self.index_of(j, i)]:
+                if self.grid[self.index_of(i, j)]:
                     result += "#"
                 else:
                     result += "."
