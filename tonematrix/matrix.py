@@ -64,7 +64,7 @@ class ToneMatrix:
         self.grid[self.index_of(row, col)] = self.click_state
 
     def clear(self):
-        for i in(len(self.grid)):
+        for i in range(len(self.grid)):
             if self.grid[i]:
                 self.grid[i] = False
 
