@@ -31,9 +31,10 @@ class ToneMatrix:
         for i in range(grid_size):
             self.instruments.append(StringInstrument(frequency_for_row(i, grid_size), sample_rate))
         self.column = 0
-        self.click_state = False
         self.marker = 0
-        self.sample_state = (self.marker+ 1) % samples_per_column 
+        self.click_state = False
+        self.sample_state = (self.marker + 1) % samples_per_column 
+        self.samples_per_column = samples_per_column
 
     def index_of(self, row, col):
         if row < 0 or row >= (self.grid_size):
@@ -70,14 +71,13 @@ class ToneMatrix:
     ### playback
 
     def next_sample(self):
-
         result = 0
         if self.marker == 0:
             self.pluck_column(self.column)
-        for i in range(len(self.instruments)):
-            if self.grid[self.index_of(i,self.column)]:
-                result += self.instruments[i].next_sample()
-        self.marker += 1
+            self.column = (self.column + 1) % self.grid_size
+        for instrument in self.instruments:
+            result += instrument.next_sample()
+        self.marker = (self.marker + 1) % self.samples_per_column
         return result
 
     def pluck_column(self, col):
