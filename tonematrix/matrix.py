@@ -33,6 +33,7 @@ class ToneMatrix:
         self.column = 0
         self.marker = 0
         self.click_state = False
+        self.sample_rate = sample_rate
         self.sample_state = (self.marker + 1) % samples_per_column 
         self.samples_per_column = samples_per_column
 
@@ -96,8 +97,8 @@ class ToneMatrix:
     
         old_size = self.grid_size
         old_grid = self.grid
-   
-        self.grid = array("b", [False] * (new_size ** 2))
+
+        self.grid = [False] * (new_size ** 2)
 
         if old_size > new_size:
             overlap = new_size
@@ -113,15 +114,14 @@ class ToneMatrix:
   
         if new_size > old_size:
             for row in range(old_size, new_size):
-                self.instruments.append(StringInstrument(frequency_for_row(row, new_size)))
+                self.instruments.append(StringInstrument(frequency_for_row(row, new_size), self.sample_rate))
         else:
             self.instruments = self.instruments[:new_size]
     
         self.grid_size = new_size
         self.column = 0
-        self.samples_since_pluck = 0
+        self.marker = 0
         
-        raise NotImplementedError("ToneMatrix.resize")
 
     ### serialization
 
