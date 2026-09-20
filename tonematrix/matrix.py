@@ -32,7 +32,7 @@ class ToneMatrix:
         for i in range(grid_size):
             self.instruments.append(StringInstrument(frequency_for_row(i, grid_size), sample_rate))
         self.column = 0
-        self.state = False
+        self.click_state = False
         self.marker = 0
         self.sample_state = (self.marker+ 1) % samples_per_column 
 
@@ -54,14 +54,14 @@ class ToneMatrix:
     def press(self, row, col):
         if self.grid[self.index_of(row, col)]:
             self.grid[self.index_of(row, col)] = False
-            self.state = False
+            self.click_state = False
         else:
             self.grid[self.index_of(row, col)] = True
-            self.state = True
+            self.click_state = True
          
      
     def drag(self, row, col):
-        self.grid[self.index_of(row, col)] = self.state
+        self.grid[self.index_of(row, col)] = self.click_state
 
     def clear(self):
         for i in(len(self.grid)):
@@ -128,7 +128,7 @@ class ToneMatrix:
 
     def to_text(self):
         result = ""
-        for i in(len(self.grid)):
+        for i in (len(self.grid)):
             if i:
                 result += "#"
             else:
