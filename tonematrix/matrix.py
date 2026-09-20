@@ -133,7 +133,8 @@ class ToneMatrix:
                     result += "#"
                 else:
                     result += "."
-            result += "\n"
+            if not i == self.grid_size - 1:
+                result += "\n"
         return result
 
     @classmethod
