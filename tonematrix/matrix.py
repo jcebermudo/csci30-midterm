@@ -99,7 +99,7 @@ class ToneMatrix:
         if new_size < 1:
             raise ValueError("Grid size too small")
     
-        old_size = len(self.grid)**0.5
+        old_size = self.grid_size
         old_grid = self.grid
    
         self.grid = array("b", [False] * (new_size ** 2))
