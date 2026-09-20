@@ -137,7 +137,6 @@ class ToneMatrix:
 
     @classmethod
     def from_text(cls, text, **kwargs):
-        """Build a matrix from the format to_text() produces. Provided."""
         rows = [line.strip() for line in text.strip().splitlines() if line.strip()]
         size = len(rows)
         if any(len(line) != size for line in rows):
