@@ -61,11 +61,7 @@ class ToneMatrix:
          
      
     def drag(self, row, col):
-        while not self.state:
-            self.grid[self.index_of(row, col)] = False
-
-        while self.state:
-            self.grid[self.index_of(row, col)] = True
+        self.grid[self.index_of(row, col)] = self.state
 
     def clear(self):
         for i in(len(self.grid)):
