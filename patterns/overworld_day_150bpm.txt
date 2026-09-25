@@ -1,0 +1,74 @@
+OVERWORLD DAY — transcription of the supplied sheet, measures 1–10
+
+Tempo: quarter note = 150 BPM
+Key signature: one sharp (F#); all pitches below include accidentals explicitly.
+Meter: 3/4 in measures 1–3; 4/4 in measures 4–10.
+Length: 37 quarter-note beats = 14.8 seconds.
+Resolution: sixteenth note = 0.1 seconds (148 steps total).
+
+FORMAT
+RH = right hand (treble staff); LH = left hand (bass staff).
+C4 = middle C. Read each hand left to right within each measure.
+NOTE/duration uses quarter-note beats: 3 = dotted half, 2 = half,
+1 = quarter, 0.5 = eighth, 0.25 = sixteenth. R = rest.
+[note,note,...] = simultaneous chord.
+A ~ after a pitch ties it into the same pitch in the next measure:
+hold it without striking it again. The final tied pitch has no ~.
+! = staccato; the duration still gives the written rhythmic value.
+(G3) = the parenthesized bass note shown in measure 7; retained here.
+
+PATTERN
+Measure 01 | 3/4 | start  0.0 s | mp
+RH: G4~/3
+LH: G3~/3
+
+Measure 02 | 3/4 | start  1.2 s | mp
+RH: [G4~,A4~]/3
+LH: G3~/3
+
+Measure 03 | 3/4 | start  2.4 s | mp
+RH: [E4~,G4~,A4~,E5~]/3
+LH: G3~/3
+
+Measure 04 | 4/4 | start  3.6 s | mp
+RH: [E4,G4,A4,E5]/3 R/1
+LH: G3/3 R/1
+
+Measure 05 | 4/4 | start  5.2 s | mf
+RH: G5!/1 F#5/0.5 B4/0.5 R/0.5 B4/0.5 C5/0.5 E5/0.5
+LH: G1/0.5 G2/0.5 G2/0.5 G3/0.5 G3/0.5 G2/0.5 G3/0.5 G3/0.5
+
+Measure 06 | 4/4 | start  6.8 s | mf
+RH: D5/0.5 G4/0.5 R/0.5 G4/0.5 R/0.5 G4/0.5 D5/0.5 G5/0.5
+LH: G3/0.5 G2/0.5 G2/0.5 G1/0.5 G1/0.5 G2/0.5 G2/0.5 G3/0.5
+
+Measure 07 | 4/4 | start  8.4 s | mf
+RH: A5/0.5 R/0.5 R/0.5 B5/0.5 R/1 G3/0.25 D4/0.25 G4/0.5
+LH: G3/0.5 G2/0.5 G1/0.5 G3/0.25 G2/0.25 G2/0.5 G3/0.5 (G3)/0.25 G2/0.25 G2/0.5
+
+Measure 08 | 4/4 | start 10.0 s | mf
+RH: [B3,D4,G4,B4]/0.5 R/0.5 R/0.5 [C4,E4,G4,C5]/0.5 R/1 G5/0.25 D5/0.25 B4/0.25 G4/0.25
+LH: G1/0.5 G3/0.5 G2/0.5 G3/0.5 G3/0.5 G2/0.5 G3/0.5 G3/0.5
+
+Measure 09 | 4/4 | start 11.6 s | mf
+RH: G5!/1 F#5/0.5 B4/0.5 R/0.5 B4/0.5 C5/0.5 E5/0.5
+LH: G2/0.5 G2/0.5 G2/0.5 G3/0.5 G3/0.5 G2/0.5 G2/0.5 G3/0.5
+
+Measure 10 | 4/4 | start 13.2 s | mf
+RH: D5!/1 R/1 R/2
+LH: G3/0.5 G2/0.5 G2/0.5 G3/0.5 G3/0.5 G2/0.5 G2/0.5 G3/0.5
+
+PERFORMANCE MARKINGS
+mp from measure 1; mf from measure 5, applying to both hands.
+Sustain pedal down at measure 1, beat 1 (0.0 s).
+Release pedal at the start of measure 4, beat 4 (4.8 s).
+Staccato: RH measure 5 G5, measure 9 G5, measure 10 D5.
+Staccato length and dynamic loudness are interpretive, not numerically
+specified by the sheet. No fixed gate length or velocity is invented here.
+
+COMPATIBILITY
+This is a note-and-duration TXT score, not a ToneMatrix #/. grid.
+The current grid cannot store tempo, ties, note lengths, dynamics, or pedal,
+and its A-minor pentatonic tuning lacks several of these pitches and G1/G2.
+Loading this file with ToneMatrix.from_text() is not supported.
+Only the ten measures visible in the supplied image are transcribed.
