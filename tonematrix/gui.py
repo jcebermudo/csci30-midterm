@@ -22,7 +22,7 @@ import threading
 from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN, write_wav
 from tonematrix.gui_common import (BG, BORDER, CELL_ON, GRID_LINE, MUTED,
                                    PANEL, TEXT, TICK_MS, Highlighter)
-from tonematrix.matrix import ToneMatrix
+from tonematrix.optimized import ToneMatrix
 from tonematrix.playback import AudioStream, LoopPlayer, render_loop, render_pass
 
 try:
