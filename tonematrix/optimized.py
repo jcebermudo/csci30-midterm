@@ -1,16 +1,3 @@
-"""Part 3: the tone matrix.
-
-A grid_size x grid_size grid of cells, stored as a *flat* list in row-major
-order, plus one StringInstrument per row.
-
-Rules for this file:
-  * self.grid is a flat list of bools of length grid_size ** 2. Do not use a
-    list of lists, a dict, a set, or numpy.
-  * The list is fixed-length: no append/pop/insert/remove. resize() is the
-    one place you build a new list, and even there you copy element by
-    element.
-"""
-
 from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN
 from tonematrix.scales import frequency_for_row
 from tonematrix.string_instrument import StringInstrument
@@ -32,9 +19,9 @@ class ToneMatrix:
             self.instruments.append(StringInstrument(frequency_for_row(i, grid_size), sample_rate))
         self.column = 0
         self.marker = 0
+        self.active_instruments = []
         self.click_state = False
         self.sample_rate = sample_rate
-        self.sample_state = (self.marker + 1) % samples_per_column 
         self.samples_per_column = samples_per_column
         self.active_rows = set()
 
@@ -73,29 +60,42 @@ class ToneMatrix:
     ### playback
 
     def next_sample(self):
+        still_active = []
         result = 0
 
         if self.marker == 0:
             self.pluck_column(self.column)
+            self.column += 1
+            if self.column == self.grid_size:
+                self.column = 0
 
-            for row in list(self.active_rows):
-                if self.instruments[row].energy() < 0.000001:
-                    self.active_rows.remove(row)
+        for instrument in self.active_instruments:
+            result += instrument.next_sample()
 
-            self.column = (self.column + 1) % self.grid_size
+        if self.marker == self.samples_per_column - 1:
+            still_active = []
 
-        for row in self.active_rows:
-            result += self.instruments[row].next_sample()
+            for instrument in self.active_instruments:
+                if instrument.energy() >= 1e-4:
+                    still_active.append(instrument)
 
-        self.marker = (self.marker + 1) % self.samples_per_column
+            self.active_instruments = still_active
+
+        self.marker += 1
+        if self.marker == self.samples_per_column:
+            self.marker = 0
 
         return result
 
-    def pluck_column(self, column):
-        for row in range(self.grid_size):
-            if self.grid[self.index_of(row, column)]:
-                self.instruments[row].pluck()
-                self.active_rows.add(row)
+    def pluck_column(self, col):
+        if col > len(self.grid)**0.5-1:
+            raise IndexError("column out of bounds")
+        
+        for i in range(len(self.instruments)):
+            if self.grid[self.index_of(i,col)]:
+                self.instruments[i].pluck()
+                if self.instruments[i] not in self.active_instruments:
+                    self.active_instruments.append(self.instruments[i])
 
     ### resizing
 
