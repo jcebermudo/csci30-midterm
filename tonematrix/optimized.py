@@ -120,7 +120,7 @@ class ToneMatrix:
                     self.saved_notes_position[row] = 0
                 else:
                     self.instruments[row].pluck()
-                    self.saved_notes[row] = []   # a recording holds exactly one pluck
+                    self.saved_notes[row] = []
                 self.active_rows.add(row)
 
     ### resizing
