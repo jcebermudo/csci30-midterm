@@ -31,7 +31,9 @@ class RingBuffer:
             raise IndexError("Queue Full")
         else:
             self._data[self._rear] = x
-            self._rear = (self._rear + 1) % self._capacity
+            self._rear += 1
+            if self._rear == self._capacity:
+                self._rear = 0
             self._size += 1
 
     def dequeue(self):
@@ -43,7 +45,9 @@ class RingBuffer:
             raise IndexError("Queue Empty")
         else:
             to_return = self._data[self._front]
-            self._front = (self._front + 1) % self._capacity
+            self._front += 1
+            if self._front == self._capacity:
+                self._front = 0
             self._size -= 1
             return to_return
 
