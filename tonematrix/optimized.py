@@ -125,7 +125,8 @@ class ToneMatrix:
                 self.instruments.append(StringInstrument(frequency_for_row(row, new_size), self.sample_rate))
         else:
             self.instruments = self.instruments[:new_size]
-    
+            self.active_rows = {r for r in self.active_rows if r < new_size}
+
         self.grid_size = new_size
         self.column = 0
         self.marker = 0
