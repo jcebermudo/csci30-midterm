@@ -24,11 +24,9 @@ from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN
 def load(name):
     if name == "optimized":
         from tonematrix.optimized import ToneMatrix
-        print("Optimized")
     else:
         from tonematrix.matrix import ToneMatrix
     return ToneMatrix
-        print("Default")
 
 
 def fill(matrix, density, seed=6767):
