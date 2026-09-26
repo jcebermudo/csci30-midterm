@@ -64,9 +64,7 @@ class ToneMatrix:
 
         if self.marker == 0:
             self.pluck_column(self.column)
-            self.column += 1
-            if self.column == self.grid_size:
-                self.column = 0
+            self.column = (self.column + 1) % self.grid_size
 
         for instrument in self.active_instruments:
             result += instrument.next_sample()
@@ -75,14 +73,12 @@ class ToneMatrix:
             still_active = []
 
             for instrument in self.active_instruments:
-                if instrument.energy() >= 0.023:
+                if instrument.energy() >= 0.01:
                     still_active.append(instrument)
 
             self.active_instruments = still_active
 
-        self.marker += 1
-        if self.marker == self.samples_per_column:
-            self.marker = 0
+        self.marker = (self.marker + 1) % self.samples_per_column
 
         return result
 
