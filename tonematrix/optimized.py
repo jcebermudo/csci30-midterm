@@ -80,30 +80,36 @@ class ToneMatrix:
         result = 0
 
         if self.marker == 0:
-            self.pluck_column(self.column)
-
             for row in list(self.active_rows):
-                if self.instruments[row].energy() < 0.000001:
+                if self.saved_notes_indicator[row]:
+                    if self.saved_notes_position[row] >= len(self.saved_notes[row]):
+                        self.saved_notes_position[row] = 0
+                        self.active_rows.remove(row)
+
+                elif self.instruments[row].energy() < 0.000001:
                     self.active_rows.remove(row)
                     self.saved_notes_indicator[row] = True
 
-            self.column = (self.column + 1) % self.grid_size
+            self.pluck_column(self.column)
+
+            self.column += 1
+            if self.column == self.grid_size:
+                self.column = 0
 
         for row in self.active_rows:
             if self.saved_notes_indicator[row]:
                 saved_position = self.saved_notes_position[row]
                 if saved_position < len(self.saved_notes[row]):
-                    result += self.saved_notes[row][position]
-                    self.saved_note_position[row] += 1
-                else:
-                    self.saved_note_position[row] = 0
-                    self.active_rows.remove(row)
+                    result += self.saved_notes[row][saved_position]
+                    self.saved_notes_position[row] += 1
             else:
                 new_sample = self.instruments[row].next_sample()
                 self.saved_notes[row].append(new_sample)
                 result += new_sample
 
-        self.marker = (self.marker + 1) % self.samples_per_column
+        self.marker += 1
+        if self.marker == self.samples_per_column:
+            self.marker = 0
 
         return result
 
@@ -114,7 +120,8 @@ class ToneMatrix:
                     self.saved_notes_position[row] = 0
                 else:
                     self.instruments[row].pluck()
-            self.active_rows.add(row)
+                    self.saved_notes[row] = []   # a recording holds exactly one pluck
+                self.active_rows.add(row)
 
     ### resizing
 
@@ -142,8 +149,14 @@ class ToneMatrix:
         if new_size > old_size:
             for row in range(old_size, new_size):
                 self.instruments.append(StringInstrument(frequency_for_row(row, new_size), self.sample_rate))
+                self.saved_notes.append([])
+                self.saved_notes_indicator.append(False)
+                self.saved_notes_position.append(0)
         else:
             self.instruments = self.instruments[:new_size]
+            self.saved_notes = self.saved_notes[:new_size]
+            self.saved_notes_indicator = self.saved_notes_indicator[:new_size]
+            self.saved_notes_position = self.saved_notes_position[:new_size]
             self.active_rows = {r for r in self.active_rows if r < new_size}
 
         self.grid_size = new_size
