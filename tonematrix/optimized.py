@@ -23,7 +23,6 @@ class ToneMatrix:
         self.click_state = False
         self.sample_rate = sample_rate
         self.samples_per_column = samples_per_column
-        self.active_rows = set()
 
     def index_of(self, row, col):
         if row < 0 or row >= (self.grid_size):
