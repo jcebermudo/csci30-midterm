@@ -14,6 +14,7 @@ Rules for this file:
 from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN
 from tonematrix.scales import frequency_for_row
 from tonematrix.string_instrument import StringInstrument
+from array import array
 
 ON = "#"
 OFF = "."
@@ -28,6 +29,9 @@ class ToneMatrix:
         self.grid_size = grid_size
         self.grid = [False]*grid_size**2
         self.instruments = []
+        self.saved_notes = [[] for x in range(grid_size)]
+        self.saved_notes_indicator = [False]*grid_size
+        self.saved_notes_position = [0]*grid_size
         for i in range(grid_size):
             self.instruments.append(StringInstrument(frequency_for_row(i, grid_size), sample_rate))
         self.column = 0
@@ -81,11 +85,23 @@ class ToneMatrix:
             for row in list(self.active_rows):
                 if self.instruments[row].energy() < 0.000001:
                     self.active_rows.remove(row)
+                    self.saved_notes_indicator[row] = True
 
             self.column = (self.column + 1) % self.grid_size
 
         for row in self.active_rows:
-            result += self.instruments[row].next_sample()
+            if self.saved_notes_indicator[row]:
+                saved_position = self.saved_notes_position[row]
+                if saved_position < len(self.saved_notes[row]):
+                    result += self.saved_notes[row][position]
+                    self.saved_note_position[row] += 1
+                else:
+                    self.saved_note_position[row] = 0
+                    self.active_rows.remove(row)
+            else:
+                new_sample = self.instruments[row].next_sample()
+                self.saved_notes[row].append(new_sample)
+                result += new_sample
 
         self.marker = (self.marker + 1) % self.samples_per_column
 
@@ -94,8 +110,11 @@ class ToneMatrix:
     def pluck_column(self, column):
         for row in range(self.grid_size):
             if self.grid[self.index_of(row, column)]:
-                self.instruments[row].pluck()
-                self.active_rows.add(row)
+                if self.saved_notes_indicator[row]:
+                    self.saved_notes_position[row] = 0
+                else:
+                    self.instruments[row].pluck()
+            self.active_rows.add(row)
 
     ### resizing
 
