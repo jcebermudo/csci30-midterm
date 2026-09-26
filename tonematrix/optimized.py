@@ -75,7 +75,7 @@ class ToneMatrix:
             still_active = []
 
             for instrument in self.active_instruments:
-                if instrument.energy() >= 1e-2:
+                if instrument.energy() >= 0.023:
                     still_active.append(instrument)
 
             self.active_instruments = still_active
