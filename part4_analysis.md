@@ -7,7 +7,7 @@ For Part 4, we chose **Option A**. The implementation is in `tonematrix/optimize
 We use the following parameters:
 
 - `n`: grid size (number of rows, which is also the number of strings)
-- `k_c`: number of lit cells in the column being plucked
+- `k`: number of lit cells in the column being plucked
 - `a`: number of strings in `active_instruments` (ringing strings), where `a <= n`
 - `L`: buffer length of a string, which is `44100 // frequency`. Since the lowest note is 110 Hz, `L <= 400`.
 - `S`: samples per column, `SAMPLES_PER_COLUMN = 8192`
@@ -17,16 +17,16 @@ We use the following parameters:
 - Optimized (`optimized.py`): O(a)
 
 **`pluck_column` (once per column)**
-- Original: O(n + k_c · L)
-- Optimized: O(n + k_c · (L + a))
+- Original: O(n + k · L)
+- Optimized: O(n + k · (L + a))
 
 **Retirement check (once per column)**
 - Original: none
 - Optimized: O(a · L)
 
 **`next_sample`, amortized per sample**
-- Original: O(n + (n + k_c · L) / S) = O(n)
-- Optimized: O(a + (n + k_c · (L + a) + a · L) / S) = O(a)
+- Original: O(n + (n + k · L) / S) = O(n)
+- Optimized: O(a + (n + k · (L + a) + a · L) / S) = O(a)
 
 **One full pass of the playhead (`n · S` samples)**
 - Original: O(n² · S)
@@ -38,9 +38,9 @@ We use the following parameters:
 
 **Optimized mixing: O(a).** The loop visits only the active strings, so it runs `a` times. Each iteration is O(1). A string is never added twice, so `a <= n`.
 
-**Original `pluck_column`: O(n + k_c · L).** The loop checks every row, so it runs `n` times. Only the `k_c` lit rows are plucked, and each pluck rewrites all `L` buffer samples.
+**Original `pluck_column`: O(n + k · L).** The loop checks every row, so it runs `n` times. Only the `k_c` lit rows are plucked, and each pluck rewrites all `L` buffer samples.
 
-**Optimized `pluck_column`: O(n + k_c · (L + a)).** Same loop as the original, but each of the `k_c` lit rows also scans the active list (length `a`) to avoid adding a duplicate.
+**Optimized `pluck_column`: O(n + k · (L + a)).** Same loop as the original, but each of the `k_c` lit rows also scans the active list (length `a`) to avoid adding a duplicate.
 
 **Retirement check: O(a · L).** The loop runs once per active string, so `a` times. Each energy check reads all `L` buffer samples.
 
@@ -74,16 +74,15 @@ Each row is one full pass of the playhead (`n · 8192` samples). "x realtime" is
 
 **After: optimized (`python benchmark.py --impl optimized`)**
 
-| size | density | samples | seconds | μs/sample | x realtime |
-|---:|---:|---:|---:|---:|---:|
-| 8 | 0.05 | 65536 | 0.037 | 0.563 | 40.25 |
-| 8 | 0.25 | 65536 | 0.355 | 5.411 | 4.19 |
-| 16 | 0.05 | 131072 | 0.494 | 3.770 | 6.02 |
-| 16 | 0.25 | 131072 | 1.384 | 10.560 | 2.15 |
-| 32 | 0.05 | 262144 | 3.354 | 12.796 | 1.77 |
-| 32 | 0.25 | 262144 | 10.034 | 38.278 | 0.59 |
-| 64 | 0.05 | 524288 | 13.130 | 25.043 | 0.91 |
-| 64 | 0.25 | 524288 | 33.683 | 64.245 | 0.35 |
+  size  density    samples   seconds  μs/sample  x realtime
+     8     0.05      65536     0.028      0.432       52.53
+     8     0.25      65536     0.205      3.129        7.25
+    16     0.05     131072     0.291      2.224       10.20
+    16     0.25     131072     0.703      5.366        4.23
+    32     0.05     262144     1.136      4.332        5.23
+    32     0.25     262144     2.898     11.056        2.05
+    64     0.05     524288     3.967      7.567        3.00
+    64     0.25     524288    10.759     20.522        1.10
 
 
 ## 4. When Our Version Is Worse
