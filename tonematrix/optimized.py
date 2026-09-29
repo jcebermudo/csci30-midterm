@@ -5,7 +5,6 @@ from tonematrix.string_instrument import StringInstrument
 ON = "#"
 OFF = "."
 
-
 class ToneMatrix:
     def __init__(self, grid_size, sample_rate=SAMPLE_RATE,
                  samples_per_column=SAMPLES_PER_COLUMN):
@@ -24,6 +23,8 @@ class ToneMatrix:
         self.sample_rate = sample_rate
         self.samples_per_column = samples_per_column
 
+    ### indexing
+    
     def index_of(self, row, col):
         if row < 0 or row >= (self.grid_size):
             raise IndexError ("Position off-grid")
@@ -39,6 +40,8 @@ class ToneMatrix:
     def set_cell(self, row, col, value):
         self.grid[self.index_of(row, col)] = bool(value)
 
+    ### editing
+    
     def press(self, row, col):
         if self.grid[self.index_of(row, col)]:
             self.grid[self.index_of(row, col)] = False
@@ -47,7 +50,6 @@ class ToneMatrix:
             self.grid[self.index_of(row, col)] = True
             self.click_state = True
          
-     
     def drag(self, row, col):
         self.grid[self.index_of(row, col)] = self.click_state
 
@@ -125,7 +127,6 @@ class ToneMatrix:
         self.column = 0
         self.marker = 0
         
-
     ### serialization
 
     def to_text(self):
@@ -140,7 +141,6 @@ class ToneMatrix:
                 result += "\n"
         return result
         
-
     @classmethod
     def from_text(cls, text, **kwargs):
         rows = [line.strip() for line in text.strip().splitlines() if line.strip()]
