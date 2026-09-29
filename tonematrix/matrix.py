@@ -1,16 +1,3 @@
-"""Part 3: the tone matrix.
-
-A grid_size x grid_size grid of cells, stored as a *flat* list in row-major
-order, plus one StringInstrument per row.
-
-Rules for this file:
-  * self.grid is a flat list of bools of length grid_size ** 2. Do not use a
-    list of lists, a dict, a set, or numpy.
-  * The list is fixed-length: no append/pop/insert/remove. resize() is the
-    one place you build a new list, and even there you copy element by
-    element.
-"""
-
 from tonematrix.audio import SAMPLE_RATE, SAMPLES_PER_COLUMN
 from tonematrix.scales import frequency_for_row
 from tonematrix.string_instrument import StringInstrument
@@ -37,6 +24,8 @@ class ToneMatrix:
         self.sample_state = (self.marker + 1) % samples_per_column 
         self.samples_per_column = samples_per_column
 
+    ### indexing
+ 
     def index_of(self, row, col):
         if row < 0 or row >= (self.grid_size):
             raise IndexError ("Position off-grid")
@@ -52,6 +41,8 @@ class ToneMatrix:
     def set_cell(self, row, col, value):
         self.grid[self.index_of(row, col)] = bool(value)
 
+    ### editing
+ 
     def press(self, row, col):
         if self.grid[self.index_of(row, col)]:
             self.grid[self.index_of(row, col)] = False
@@ -59,8 +50,7 @@ class ToneMatrix:
         else:
             self.grid[self.index_of(row, col)] = True
             self.click_state = True
-         
-     
+              
     def drag(self, row, col):
         self.grid[self.index_of(row, col)] = self.click_state
 
