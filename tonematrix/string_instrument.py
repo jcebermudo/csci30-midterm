@@ -1,16 +1,3 @@
-"""Part 2: a simulated plucked string (Karplus-Strong).
-
-The string is a RingBuffer of displacement samples plus two rules for how
-that buffer evolves. You built the buffer in Part 1; here you only use its
-public interface.
-
-Rules for this file:
-  * All access to the samples goes through enqueue/dequeue/peek. Do not reach
-    into self.buffer._data, and do not keep a second copy of the samples.
-  * The buffer is created once in __init__ and never replaced.
-  * pluck() and next_sample() allocate nothing.
-"""
-
 from tonematrix.audio import SAMPLE_RATE
 from tonematrix.ring_buffer import RingBuffer
 
@@ -38,12 +25,6 @@ class StringInstrument:
 
     @classmethod
     def make_from_array(cls, values, frequency=None, sample_rate=SAMPLE_RATE):
-        """Build a string whose buffer starts out holding `values`.
-
-        Provided, for debugging and for the tests; you will not need to call
-        it yourself. It skips __init__ so that it can accept a buffer of any
-        contents, including ones no real pluck would produce.
-        """
         string = cls.__new__(cls)
         string.frequency = (frequency if frequency is not None
                             else sample_rate / len(values))
@@ -74,12 +55,6 @@ class StringInstrument:
         return value1
 
     def energy(self):
-        """Mean absolute amplitude in the buffer. Provided; used in Part 4.
-
-        Rotating a full queue all the way around leaves it exactly as it
-        started, so this reads every sample without disturbing anything. It is
-        also a decent worked example of using the buffer's interface.
-        """
         total = 0.0
         n = self.buffer.size()
         for _ in range(n):
