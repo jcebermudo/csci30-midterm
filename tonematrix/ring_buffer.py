@@ -34,10 +34,6 @@ class RingBuffer:
             self._size += 1
 
     def dequeue(self):
-        """Remove and return the item at the front. 
-
-        Raise IndexError if the buffer is empty.
-        """
         if self.is_empty():
             raise IndexError("Queue Empty")
         else:
@@ -52,5 +48,4 @@ class RingBuffer:
         return self._data[self._front]
 
     def __len__(self):
-        """So that len(buffer) works. Provided, once size() works."""
         return self.size()
